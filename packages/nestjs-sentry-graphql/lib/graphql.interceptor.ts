@@ -1,21 +1,17 @@
 import { ExecutionContext, Injectable } from "@nestjs/common";
-import type { GqlContextType } from '@nestjs/graphql';
+import { GqlContextType, GqlExecutionContext } from '@nestjs/graphql';
 
 // Sentry imports
 import { Scope } from '@sentry/hub';
 import { Handlers } from '@sentry/node';
-import { SentryInterceptor } from ".";
 
-let GqlExecutionContext: any;
-try {
-  ({ GqlExecutionContext } = require('@nestjs/graphql'));
-} catch (e) {}
+import { SentryInterceptor } from "@travelerdev/nestjs-sentry-rest";
 
 
 @Injectable()
 export class GraphqlInterceptor extends SentryInterceptor {
 
-    protected captureException(context: ExecutionContext, scope: Scope, exception: any) {
+    protected captureException(context: ExecutionContext, scope: Scope, exception: unknown) {
         if (context.getType<GqlContextType>() === 'graphql') {
             this.captureGraphqlException(scope, GqlExecutionContext.create(context), exception);
         } else {
@@ -23,7 +19,7 @@ export class GraphqlInterceptor extends SentryInterceptor {
         }
     }
 
-    private captureGraphqlException(scope: Scope, gqlContext: typeof GqlExecutionContext, exception: any): void {
+    private captureGraphqlException(scope: Scope, gqlContext: GqlExecutionContext, exception: unknown): void {
         const info = gqlContext.getInfo()
         const context = gqlContext.getContext()
 
@@ -31,7 +27,7 @@ export class GraphqlInterceptor extends SentryInterceptor {
 
         if (context.req) {
             // req within graphql context needs modification in 
-            const data = Handlers.parseRequest(<any>{}, context.req, {});
+            const data = Handlers.parseRequest({}, context.req, {});
 
             scope.setExtra('req', data.request);
 

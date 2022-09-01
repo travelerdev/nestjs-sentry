@@ -1,1 +1,20 @@
 node_modules
+
+# IDE
+/.idea
+/.awcache
+/.vscode
+
+# misc
+npm-debug.log
+.DS_Store
+
+# tests outputs
+/coverage
+/.nyc_output
+test-schema.graphql
+*.test-definitions.ts
+
+# dist no longer gets checked in
+packages/**/dist
+**/*.tsbuildinfo

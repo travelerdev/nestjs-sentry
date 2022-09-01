@@ -1,0 +1,11 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./nestjs-sentry-graphql/tsconfig.build.json"
+    },
+    {
+      "path": "./nestjs-sentry-rest/tsconfig.build.json"
+    }
+  ]
+}

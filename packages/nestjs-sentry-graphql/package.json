@@ -13,9 +13,16 @@
   ],
   "name": "@travelerdev/nestjs-sentry-graphql",
   "version": "9.0.0",
-  "description": "Provides an injectable sentry.io client to provide enterprise logging of nestjs modules",
+  "description": "Provides an injectable sentry.io client to provide enterprise logging of nestjs modules with GraphQL",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
+  "directories": {
+    "dist": "dist",
+    "lib": "lib"
+  },
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/travelerdev/nestjs-sentry"
@@ -37,7 +44,7 @@
   "author": "Zack Sheppard",
   "license": "ISC",
   "dependencies": {
-    "@travelerdev/nestjs-sentry-rest": "../rest"
+    "@travelerdev/nestjs-sentry-rest": "./packages/nestjs-sentry-rest"
   },
   "peerDependencies": {
     "@nestjs/common": "^9.0.0",
@@ -48,6 +55,9 @@
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
+  },
+  "devDependencies": {
+    "@nestjs/graphql": "^10.0.0"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -62,17 +72,5 @@
     },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "devDependencies": {
-    "@nestjs/testing": "^9.0.0",
-    "@types/jest": "^28.0.0",
-    "@types/node": "^16.3.1",
-    "@types/supertest": "^2.0.12",
-    "jest": "^28.0.1",
-    "prettier": "^2.7.1",
-    "supertest": "^6.2.4",
-    "ts-jest": "^28.0.8",
-    "tsconfig-paths": "^4.1.0",
-    "typescript": "^4.8.2"
   }
 }
