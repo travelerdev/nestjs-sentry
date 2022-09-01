@@ -1,79 +1,82 @@
-[![npm version](http://img.shields.io/npm/v/@ntegral/nestjs-sentry.svg?style=flat)](https://npmjs.org/package/@ntegral/nestjs-sentry "View this project on npm")
-[![Codecov Coverage](https://img.shields.io/codecov/c/github/ntegral/nestjs-sentry/master.svg?style=flat-square)](https://codecov.io/gh/ntegral/nestjs-sentry)
+[![npm version](http://img.shields.io/npm/v/@travelerdev/nestjs-sentry.svg?style=flat)](https://npmjs.org/package/@travelerdev/nestjs-sentry 'View this project on npm')
 [![ISC license](http://img.shields.io/badge/license-ISC-brightgreen.svg)](http://opensource.org/licenses/ISC)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PM2PTQ6Z2XATQ&source=url)
 
 <p align="center">
   <h3 align="center">
-    @ntegral/nestjs-sentry
+    @travelerdev/nestjs-sentry
   </h3>
 
   <p align="center">
-    Provides an injectable sentry.io client to provide enterprise logging nestjs modules
+    Provides an injectable sentry.io client to provide both automated and manual enterprise logging of nestjs modules
   </p>
 </p>
 
 ## Table Of Contents
 
-- [NestJS 8 Support](#nestjs-8-support)
 - [About](#about)
+- [GraphQL Support](#graphql-support)
+- [NestJS 9 Support](#nestjs-9-support)
 - [Installation](#installation)
 - [Getting Started](#getting-started)
 - [Contributing](#contributing)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
 
-## NestJS 8 Support
-Version 3.x.x will support NestJS 8+. If you need support for NestJS 7 please continue to use Version 2.x.x.  Thanks for you support!
-
 ## About
 
-`@ntegral/nestjs-sentry` implements a module, `SentryModule`, which when imported into
+`@travelerdev/nestjs-sentry` is built upon the foundation developed by [`@ntegral/nestjs-sentry`](https://github.com/ntegral/nestjs-sentry).
+Both packages implement a module, `SentryModule` which when imported into
 your nestjs project provides a Sentry.io client to any class that injects it. This
 lets Sentry.io be worked into your dependency injection workflow without having to
 do any extra work outside of the initial setup.
 
+It can optionally also intercept error messages logged by your system and automatically propogate those to Sentry.
+
+### GraphQL Support
+
+If you are writing a server that uses `@nestjs/graphql`, you probably want to use the package `@travelerdev/nestjs-sentry-graphql` instead.
+It contains all the same code as this package but adds an interceptor specifically for GraphQL resolvers. It has been separated out into its own package
+so that depending on this package does not introduce any dependencies on `@nestjs/graphql`.
+
+## NestJS 9 Support
+
+This package begins at version 4.x.x and supports NestJS 9+. If you need support for NestJS 8 or 7, please visit [`@ntegral/nestjs-sentry`](https://github.com/ntegral/nestjs-sentry) for support.
+
 ## Installation
 
 ```bash
-npm install --save @ntegral/nestjs-sentry @sentry/node
+npm install --save @travelerdev/nestjs-sentry @sentry/node
 ```
-
-## Github Sample Project using @ntegral/nestjs-sentry
-
-The following project was created as a sample starter project to get you going... (if needed...).
-- [@ntegral/nestjs-sentry sample](https://github.com/ntegral/nestjs-sentry-example)
 
 ## Getting Started
 
-The simplest way to use `@ntegral/nestjs-sentry` is to use `SentryModule.forRoot`
+To get started with `@travelerdev/nestjs-sentry` you should add an import of `SentryModule.forRoot` to your app's root module.
 
 ```typescript
 import { Module } from '@nestjs-common';
-import { SentryModule } from '@ntegral/nestjs-sentry';
-import { LogLevel } from '@sentry/types';
+import { SentryModule } from '@travelerdev/nestjs-sentry';
 
 @Module({
   imports: [
     SentryModule.forRoot({
-      dsn: 'sentry_io_dsn',
+      dsn: '<< your sentry_io_dsn >>',
       debug: true | false,
       environment: 'dev' | 'production' | 'some_environment',
-      release: 'some_release', | null, // must create a release in sentry.io dashboard
-      logLevel: LogLevel.Debug //based on sentry.io loglevel //
+      release: 'some_release', | null, // must first create a release in sentry.io dashboard
+      logLevels: ["debug"] //based on sentry.io loglevel //
     }),
   ],
 })
 export class AppModule {}
 ```
 
-The async way `@ntegral/nestjs-sentry` is to use `SentryModule.forRootAsync`
+You can alternatively use an async config factory if you need injected dependencies:
 
 ```typescript
 import { Module } from '@nestjs-common';
-import { SentryModule } from '@ntegral/nestjs-sentry';
-import { ConfigModule } from '@ntegral/nestjs-config';
-import { ConfigService } from '@ntegral/nestjs-config';
+import { SentryModule } from '@travelerdev/nestjs-sentry';
+import { ConfigModule } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -84,7 +87,7 @@ import { ConfigService } from '@ntegral/nestjs-config';
         debug: true | false,
         environment: 'dev' | 'production' | 'some_environment',
         release: 'some_release', | null, // must create a release in sentry.io dashboard
-        logLevel: LogLevel.Debug //based on sentry.io loglevel //
+        logLevels: ["debug"] //based on sentry.io loglevel //
       }),
       inject: [ConfigService],
     })
@@ -94,12 +97,11 @@ import { ConfigService } from '@ntegral/nestjs-config';
 export class AppModule {}
 ```
 
-You can then inject the Sentry client into any of your injectables by using a
-custom decorator
+After importing, you can then inject the Sentry client into any of your injectables with the provided decorator:
 
 ```typescript
 import { Injectable } from '@nestjs/common';
-import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry';
+import { InjectSentry, SentryService } from '@travelerdev/nestjs-sentry';
 
 @Injectable()
 export class AppService {
@@ -111,7 +113,7 @@ export class AppService {
 }
 ```
 
-You can instruct Nest to use the SentryService as the default logger:
+To automatically absorb messages from your service into Sentry, you can instruct Nest to use the SentryService as the default logger:
 
 ```typescript
 async function bootstrap() {
@@ -123,63 +125,39 @@ async function bootstrap() {
 bootstrap();
 ```
 
-You can instuct use the SentryService to log non-error messages as breadcrumbs or use the native Sentry.addBreadcrumb method.
+You can use the various logging and breadcrumbing methods to create helpful debug information in Sentry:
 
 ```typescript
 import { Injectable } from '@nestjs/common';
-import { InjectSentry, SentryService } from '@ntegral/nestjs-sentry';
-import {  Severity } from '@sentry/types';
+import { InjectSentry, SentryService } from '@travelerdev/nestjs-sentry';
+import { Severity } from '@sentry/types';
 
 @Injectable()
 export class AppService {
   constructor(@InjectSentry() private readonly client: SentryService) {
-    client.log('AppSevice Loaded','test', true); // creates log asBreadcrumb //
-    client.instance().addBreadcrumb({level: Severity.Debug, message: 'How to use native breadcrumb', data: { context: 'WhatEver'}})
+    client.log('AppSevice Loaded', 'test', true); // creates log asBreadcrumb //
+    client.instance().addBreadcrumb({
+      level: Severity.Debug,
+      message: 'How to use native breadcrumb',
+      data: { context: 'WhatEver' }
+    });
     client.debug('AppService Debug', 'context');
-  }
-  getHello(): string {
-    return 'Hello World!';
   }
 }
 ```
 
-## Interceptors
-
-BREAKING CHANGES: The SentryInterceptor can be used in projects that don't require GraphQL. If you will be needed GraphQL support, use the GraphqlInterceptor that is in the package @travelerdev/nestjs-sentry-graphql
-
-```bash
-npm install --save @nestjs/graphql
-```
-
-Using graphql interceptor globally
-```typescript
-import { Module } from '@nestjs/common';
-import { APP_INTERCEPTOR } from '@nestjs/core';
-import { GraphqlInterceptor } from '@ntegral/nestjs-sentry';
-
-@Module({
-  ....
-  providers: [
-    {
-      provide: APP_INTERCEPTOR,
-      useFactory: () => new GraphqlInterceptor(),
-    },
-  ],
-})
-export class AppModule {}
-```
-
 ## Flushing sentry
-Sentry does not flush all the errors by itself, it does it in background so that it doesn't block the main thread. If 
+
+Sentry does not flush all the errors by itself, it does it in background so that it doesn't block the main thread. If
 you kill the nestjs app forcefully some exceptions don't have to be flushed and logged successfully.
 
 If you want to force that behaviour use the close flag in your options. That is handy if using nestjs as a console
-runner. Keep in mind that you need to have ```app.enableShutdownHooks();``` enabled in order 
+runner. Keep in mind that you need to have `app.enableShutdownHooks();` enabled in order
 for closing (flushing) to work.
 
 ```typescript
 import { Module } from '@nestjs-common';
-import { SentryModule } from '@ntegral/nestjs-sentry';
+import { SentryModule } from '@travelerdev/nestjs-sentry';
 import { LogLevel } from '@sentry/types';
 
 @Module({
@@ -192,8 +170,8 @@ import { LogLevel } from '@sentry/types';
       logLevel: LogLevel.Debug //based on sentry.io loglevel //
       close: {
         enabled: true,
-        // Time in milliseconds to forcefully quit the application  
-        timeout?: number,  
+        // Time in milliseconds to forcefully quit the application
+        timeout?: number,
       }
     }),
   ],
@@ -201,14 +179,13 @@ import { LogLevel } from '@sentry/types';
 export class AppModule {}
 ```
 
-
 ## Contributing
 
-I would greatly appreciate any contributions to make this project better. Please
-make sure to follow the below guidelines before getting your hands dirty.
+This project is itself a fork of a long-lived open source projects, and so contributions are always welcome.
+They are the only way to keep this project alive and thriving. If you want to contribute, please follow these steps:
 
 1. Fork the repository
-2. Create your branch (`git checkout -b my-branch`)
+2. Create your branch (`git checkout -b my-feature-name`)
 3. Commit any changes to your branch
 4. Push your changes to your remote branch
 5. Open a pull request
@@ -222,4 +199,4 @@ Distributed under the ISC License. See `LICENSE` for more information.
 - [nestjs](https://nestjs.com)
 - [@sentry/node](https://github.com/getsentry/sentry-javascript)
 
-Copyright &copy; 2019 Ntegral Inc.
+Copyright &copy; 2019 Ntegral Inc. and 2022 Traveler Dev Ltd. (England 13120175)
