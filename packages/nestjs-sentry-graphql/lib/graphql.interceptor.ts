@@ -5,7 +5,7 @@ import { GqlContextType, GqlExecutionContext } from '@nestjs/graphql';
 import { Scope } from '@sentry/hub';
 import { Handlers } from '@sentry/node';
 
-import { SentryInterceptor } from "@travelerdev/nestjs-sentry-rest";
+import { SentryInterceptor } from "@travelerdev/nestjs-sentry";
 
 
 @Injectable()

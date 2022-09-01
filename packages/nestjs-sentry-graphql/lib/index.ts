@@ -1,2 +1,2 @@
-export * from '@travelerdev/nestjs-sentry-rest';
+export * from '@travelerdev/nestjs-sentry';
 export * from './graphql.interceptor';
