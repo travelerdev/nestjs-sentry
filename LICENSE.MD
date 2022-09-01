@@ -1,3 +1,4 @@
+Copyright (c) 2022, Traveler Dev Ltd. (England 13120175)
 Copyright (c) 2019, Ntegral Inc. c/o Dexter Hardy
 
 Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.

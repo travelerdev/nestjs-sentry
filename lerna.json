@@ -1,0 +1,14 @@
+{
+  "packages": ["packages/*"],
+  "version": "10.0.22",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "changelog": {
+    "labels": {
+      "feature": "Features",
+      "bug": "Bug fixes",
+      "enhancement": "Enhancements",
+      "dependencies": "Dependencies"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+    "exclude": ["node_modules", "test", "dist", "**/*spec.ts"],
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "sourceMap": true,
+        "inlineSources": true,
+        "sourceRoot": "/",
+        "noImplicitAny": false
+    }
+}
