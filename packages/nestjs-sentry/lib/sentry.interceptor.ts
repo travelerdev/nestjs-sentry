@@ -21,7 +21,7 @@ export class SentryInterceptor implements NestInterceptor {
   protected readonly client: SentryService = SentryService.SentryServiceInstance();
   constructor(private readonly options?: SentryInterceptorOptions) {}
 
-  intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     // first param would be for events, second is for errors
     return next.handle().pipe(
       tap(null, (exception) => {

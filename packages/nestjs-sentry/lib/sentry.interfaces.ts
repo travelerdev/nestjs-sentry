@@ -27,7 +27,7 @@ export interface SentryModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'
   inject?: (InjectionToken | OptionalFactoryDependency)[];
   useClass?: Type<SentryOptionsFactory>;
   useExisting?: Type<SentryOptionsFactory>;
-  useFactory?: (...args: unknown[]) => Promise<SentryModuleOptions> | SentryModuleOptions;
+  useFactory?: (...args: any[]) => Promise<SentryModuleOptions> | SentryModuleOptions;
 }
 
 export type SentryTransaction = boolean | 'path' | 'methodPath' | 'handler';
@@ -46,7 +46,7 @@ export interface SentryInterceptorOptionsFilter {
 export interface SentryInterceptorOptions {
   filters?: SentryInterceptorOptionsFilter[];
   tags?: { [key: string]: string };
-  extra?: { [key: string]: unknown };
+  extra?: { [key: string]: any };
   fingerprint?: string[];
   level?: SeverityLevel;
 
