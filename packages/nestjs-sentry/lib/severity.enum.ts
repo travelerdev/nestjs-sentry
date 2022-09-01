@@ -12,5 +12,5 @@ export const Severity: Record<string, SeverityLevel> = {
   Warning: 'warning',
   Log: 'log',
   Info: 'info',
-  Debug: 'debug',
+  Debug: 'debug'
 };

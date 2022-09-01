@@ -1,5 +1,5 @@
 {
-  "extends": "../tsconfig.base.json",
+  "extends": "../tsconfig.build.json",
   "include": ["./lib/**/*"],
   "exclude": ["node_modules"],
   "compilerOptions": {

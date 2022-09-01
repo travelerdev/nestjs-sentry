@@ -1,9 +1,11 @@
 {
   "compilerOptions": {
     "declaration": true,
+    "declarationMap": true,
     "module": "commonjs",
     "strict": true,
     "removeComments": true,
+    "noImplicitAny": false,
     "noLib": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,

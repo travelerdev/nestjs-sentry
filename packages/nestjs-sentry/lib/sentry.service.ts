@@ -12,14 +12,14 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
   private static serviceInstance: SentryService;
   constructor(
     @Inject(SENTRY_MODULE_OPTIONS)
-    readonly opts?: SentryModuleOptions,
+    readonly opts?: SentryModuleOptions
   ) {
     super();
     if (!(opts && opts.dsn)) {
       // console.log('options not found. Did you use SentryModule.forRoot?');
       return;
     }
-    const { debug, integrations = [], ...sentryOptions } = opts;
+    const { integrations = [], ...sentryOptions } = opts;
     Sentry.init({
       ...sentryOptions,
       integrations: [
@@ -33,11 +33,11 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
               Sentry.getCurrentHub().getClient<Client<ClientOptions>>()?.captureException(err);
               process.exit(1);
             }
-          },
+          }
         }),
         new Sentry.Integrations.OnUnhandledRejection({ mode: 'warn' }),
-        ...integrations,
-      ],
+        ...integrations
+      ]
     });
   }
 
@@ -57,8 +57,8 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
             message,
             level: Severity.Log,
             data: {
-              context,
-            },
+              context
+            }
           })
         : Sentry.captureMessage(message, Severity.Log);
     } catch (err) {}
@@ -81,8 +81,8 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
             message,
             level: Severity.Warning,
             data: {
-              context,
-            },
+              context
+            }
           })
         : Sentry.captureMessage(message, Severity.Warning);
     } catch (err) {}
@@ -97,8 +97,8 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
             message,
             level: Severity.Debug,
             data: {
-              context,
-            },
+              context
+            }
           })
         : Sentry.captureMessage(message, Severity.Debug);
     } catch (err) {}
@@ -113,8 +113,8 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
             message,
             level: Severity.Info,
             data: {
-              context,
-            },
+              context
+            }
           })
         : Sentry.captureMessage(message, Severity.Info);
     } catch (err) {}
@@ -124,7 +124,7 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
     return Sentry;
   }
 
-  async onApplicationShutdown(_signal?: string) {
+  async onApplicationShutdown() {
     if (this.opts?.close?.enabled === true) {
       await Sentry.close(this.opts?.close.timeout);
     }
