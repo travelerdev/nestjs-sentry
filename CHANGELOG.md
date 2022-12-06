@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.1.1
+
+- Minor dependency updates
+- Bugfix - remove relative path import in package.json
+
 ## 4.1.0
 
 Stricter typing on Severity helper object
