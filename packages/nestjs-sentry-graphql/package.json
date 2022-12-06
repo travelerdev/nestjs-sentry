@@ -44,7 +44,7 @@
   "author": "Zack Sheppard",
   "license": "ISC",
   "dependencies": {
-    "@travelerdev/nestjs-sentry": "./packages/nestjs-sentry"
+    "@travelerdev/nestjs-sentry": "^4.0.0"
   },
   "peerDependencies": {
     "@nestjs/common": "^9.0.0",
