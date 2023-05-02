@@ -9,7 +9,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "tsc -b -v packages",
+    "build": "tsc -b -v packages/nestjs-sentry packages/nestjs-sentry-graphql",
     "clean": "tsc -b --clean packages",
     "format": "prettier packages/**/*.ts --ignore-path ./.prettierignore --write",
     "lint": "eslint 'packages/**/*.ts' --fix",
