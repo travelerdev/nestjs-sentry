@@ -1,10 +1,7 @@
 {
-  "packages": [
-    "packages/*"
-  ],
+  "packages": ["packages/*"],
   "version": "4.1.2",
   "npmClient": "yarn",
-  "useWorkspaces": true,
   "changelog": {
     "labels": {
       "feature": "Features",
@@ -12,5 +9,6 @@
       "enhancement": "Enhancements",
       "dependencies": "Dependencies"
     }
-  }
+  },
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }
