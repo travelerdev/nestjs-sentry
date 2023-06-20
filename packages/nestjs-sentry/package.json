@@ -44,8 +44,7 @@
   "author": "Zack Sheppard and Dexter Hardy",
   "license": "ISC",
   "peerDependencies": {
-    "@nestjs/common": "^9.0.0|^10.0.0",
-    "@nestjs/core": "^9.0.0|^10.0.0",
+    "@nestjs/common": "^9.0.0 || ^10.0.0",
     "@sentry/hub": "^7.12.0",
     "@sentry/node": "^7.12.0",
     "reflect-metadata": "^0.1.13",
