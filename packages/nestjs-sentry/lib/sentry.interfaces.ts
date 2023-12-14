@@ -1,4 +1,9 @@
-import { ModuleMetadata, Type } from '@nestjs/common/interfaces';
+import {
+  InjectionToken,
+  ModuleMetadata,
+  OptionalFactoryDependency,
+  Type
+} from '@nestjs/common/interfaces';
 import { Integration, Options } from '@sentry/types';
 import { ConsoleLoggerOptions } from '@nestjs/common';
 import { SeverityLevel } from '@sentry/node';
@@ -19,7 +24,7 @@ export interface SentryOptionsFactory {
 }
 
 export interface SentryModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'> {
-  inject?: any[];
+  inject?: (InjectionToken | OptionalFactoryDependency)[];
   useClass?: Type<SentryOptionsFactory>;
   useExisting?: Type<SentryOptionsFactory>;
   useFactory?: (...args: any[]) => Promise<SentryModuleOptions> | SentryModuleOptions;
@@ -28,10 +33,12 @@ export interface SentryModuleAsyncOptions extends Pick<ModuleMetadata, 'imports'
 export type SentryTransaction = boolean | 'path' | 'methodPath' | 'handler';
 
 export interface SentryFilterFunction {
-  (exception: any): boolean;
+  (exception: unknown): boolean;
 }
 
 export interface SentryInterceptorOptionsFilter {
+  // This one type must remain an `any` because it's used as the RHS of an `instanceof` operator
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   type: any;
   filter?: SentryFilterFunction;
 }

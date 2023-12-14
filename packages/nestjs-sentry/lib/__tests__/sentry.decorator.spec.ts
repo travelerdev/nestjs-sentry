@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SentryModuleOptions } from '../../../../lib/sentry.interfaces';
 import { Injectable } from '@nestjs/common';
 import { InjectSentry } from '../sentry.decorator';
 import { SentryModule } from '../sentry.module';
 import { SentryService } from '../sentry.service';
+import { SentryModuleOptions } from '../sentry.interfaces';
 
 describe('InjectS3', () => {
   const config: SentryModuleOptions = {
