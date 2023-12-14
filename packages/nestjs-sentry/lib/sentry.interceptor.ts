@@ -72,7 +72,7 @@ export class SentryInterceptor implements NestInterceptor {
   private shouldReport(exception: unknown) {
     if (this.options && !this.options.filters) return true;
 
-    // If all filters pass, then we do not report
+    // If any filter passes, then we do not report
     if (this.options) {
       const opts: SentryInterceptorOptions = this.options;
 
