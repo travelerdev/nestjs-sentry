@@ -12,7 +12,7 @@
     }
   ],
   "name": "@travelerdev/nestjs-sentry-graphql",
-  "version": "4.2.1",
+  "version": "4.3.0",
   "description": "Provides an injectable sentry.io client to provide enterprise logging of nestjs modules with GraphQL",
   "main": "./dist/index.js",
   "typings": "./dist/index.d.ts",
@@ -44,7 +44,7 @@
   "author": "Zack Sheppard",
   "license": "ISC",
   "dependencies": {
-    "@travelerdev/nestjs-sentry": "^4.2.1"
+    "@travelerdev/nestjs-sentry": "^4.3.0"
   },
   "peerDependencies": {
     "@nestjs/common": "^9.0.0 || ^10.0.0",
