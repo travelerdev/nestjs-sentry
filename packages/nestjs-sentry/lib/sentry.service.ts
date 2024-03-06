@@ -1,4 +1,4 @@
-import { Inject, Injectable, ConsoleLogger } from '@nestjs/common';
+import { Inject, Injectable, ConsoleLogger, LogLevel } from '@nestjs/common';
 import { OnApplicationShutdown } from '@nestjs/common';
 import { ClientOptions, Client } from '@sentry/types';
 import * as Sentry from '@sentry/node';
@@ -19,6 +19,10 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
       // console.log('options not found. Did you use SentryModule.forRoot?');
       return;
     }
+    if (!SentryService.serviceInstance) {
+      SentryService.serviceInstance = this;
+    }
+
     const { integrations = [], ...sentryOptions } = opts;
     Sentry.init({
       ...sentryOptions,
@@ -49,6 +53,8 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
   }
 
   log(message: string, context?: string, asBreadcrumb?: boolean) {
+    if (!this._shouldLog('log')) return;
+
     message = `${this.app} ${message}`;
     try {
       super.log(message, context);
@@ -65,6 +71,8 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
   }
 
   error(message: string, trace?: string, context?: string) {
+    if (!this._shouldLog('error')) return;
+
     message = `${this.app} ${message}`;
     try {
       super.error(message, trace, context);
@@ -73,6 +81,8 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
   }
 
   warn(message: string, context?: string, asBreadcrumb?: boolean) {
+    if (!this._shouldLog('warn')) return;
+
     message = `${this.app} ${message}`;
     try {
       super.warn(message, context);
@@ -89,6 +99,8 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
   }
 
   debug(message: string, context?: string, asBreadcrumb?: boolean) {
+    if (!this._shouldLog('debug')) return;
+
     message = `${this.app} ${message}`;
     try {
       super.debug(message, context);
@@ -105,6 +117,8 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
   }
 
   verbose(message: string, context?: string, asBreadcrumb?: boolean) {
+    if (!this._shouldLog('verbose')) return;
+
     message = `${this.app} ${message}`;
     try {
       super.verbose(message, context);
@@ -128,5 +142,10 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
     if (this.opts?.close?.enabled === true) {
       await Sentry.close(this.opts?.close.timeout);
     }
+  }
+
+  private _shouldLog(level: LogLevel) {
+    if (!this.opts?.logLevels) return true;
+    return this.opts?.logLevels?.includes(level);
   }
 }
