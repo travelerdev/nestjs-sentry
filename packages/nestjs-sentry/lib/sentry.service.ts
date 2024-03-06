@@ -19,6 +19,10 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
       // console.log('options not found. Did you use SentryModule.forRoot?');
       return;
     }
+    if (!SentryService.serviceInstance) {
+      SentryService.serviceInstance = this;
+    }
+
     const { integrations = [], ...sentryOptions } = opts;
     Sentry.init({
       ...sentryOptions,
