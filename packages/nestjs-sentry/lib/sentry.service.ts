@@ -19,6 +19,11 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
       // console.log('options not found. Did you use SentryModule.forRoot?');
       return;
     }
+
+    if (!SentryService.serviceInstance) {
+      SentryService.serviceInstance = this;
+    }
+
     const { integrations = [], ...sentryOptions } = opts;
     Sentry.init({
       ...sentryOptions,
@@ -52,7 +57,7 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
     message = `${this.app} ${message}`;
     try {
       super.log(message, context);
-      asBreadcrumb
+      asBreadcrumb === true || this.opts?.defaultAsBreadcrumb?.includes('log')
         ? Sentry.addBreadcrumb({
             message,
             level: Severity.Log,
@@ -76,7 +81,7 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
     message = `${this.app} ${message}`;
     try {
       super.warn(message, context);
-      asBreadcrumb
+      asBreadcrumb === true || this.opts?.defaultAsBreadcrumb?.includes('warn')
         ? Sentry.addBreadcrumb({
             message,
             level: Severity.Warning,
@@ -92,7 +97,7 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
     message = `${this.app} ${message}`;
     try {
       super.debug(message, context);
-      asBreadcrumb
+      asBreadcrumb === true || this.opts?.defaultAsBreadcrumb?.includes('debug')
         ? Sentry.addBreadcrumb({
             message,
             level: Severity.Debug,
@@ -108,7 +113,7 @@ export class SentryService extends ConsoleLogger implements OnApplicationShutdow
     message = `${this.app} ${message}`;
     try {
       super.verbose(message, context);
-      asBreadcrumb
+      asBreadcrumb === true || this.opts?.defaultAsBreadcrumb?.includes('verbose')
         ? Sentry.addBreadcrumb({
             message,
             level: Severity.Info,

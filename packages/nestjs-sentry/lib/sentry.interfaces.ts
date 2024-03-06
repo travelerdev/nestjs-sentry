@@ -5,7 +5,7 @@ import {
   Type
 } from '@nestjs/common/interfaces';
 import { Integration, Options } from '@sentry/types';
-import { ConsoleLoggerOptions } from '@nestjs/common';
+import { ConsoleLoggerOptions, LogLevel } from '@nestjs/common';
 import { SeverityLevel } from '@sentry/node';
 
 export interface SentryCloseOptions {
@@ -14,9 +14,12 @@ export interface SentryCloseOptions {
   timeout?: number;
 }
 
+type NonErrorLogLevel = Exclude<LogLevel, 'error' | 'fatal'>;
+
 export type SentryModuleOptions = Omit<Options, 'integrations'> & {
   integrations?: Integration[];
   close?: SentryCloseOptions;
+  defaultAsBreadcrumb?: NonErrorLogLevel[];
 } & ConsoleLoggerOptions;
 
 export interface SentryOptionsFactory {
